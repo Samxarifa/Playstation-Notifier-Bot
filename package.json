@@ -1,6 +1,6 @@
 {
-  "name": "playstationapi1",
-  "module": "index.ts",
+  "name": "playstation-notifier-bot",
+  "module": "src/index.ts",
   "type": "module",
   "private": true,
   "devDependencies": {
@@ -10,6 +10,7 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "discord.js": "^14.22.1",
     "psn-api": "^2.15.0"
   }
 }
