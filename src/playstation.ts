@@ -28,10 +28,11 @@ export default class PlaystationAPI {
     }
     
     private async getTokensFromNpsso() {
+        console.log("Generating Tokens from NPSSO");
         const accessCode = await exchangeNpssoForAccessCode(this.npsso);
         const authTokens = await exchangeAccessCodeForAuthTokens(accessCode);
         this.authTokens = authTokens;
-        this.expiryTimeISO = new Date(Date.now() + authTokens.expiresIn * 1000).toISOString();
+        this.setExpiryTimeISO();
     }
 
     private async getAccessToken() {
@@ -42,8 +43,17 @@ export default class PlaystationAPI {
             throw new Error("Failed to Generate Tokens");
         }
         if (new Date().getTime() >= new Date(this.expiryTimeISO).getTime()) {
+            console.log("Refreshing Access Token");
             this.authTokens = await exchangeRefreshTokenForAuthTokens(this.authTokens.refreshToken);
+            this.setExpiryTimeISO();
         }
         return this.authTokens.accessToken;
+    }
+
+    private setExpiryTimeISO() {
+        if (this.authTokens) {
+            this.expiryTimeISO = new Date(Date.now() + this.authTokens.expiresIn * 1000).toISOString();
+            console.log(`New Expiry Time: ${this.expiryTimeISO}`);
+        }
     }
 }

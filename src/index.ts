@@ -18,12 +18,19 @@ client.once(Events.ClientReady, c => {
     console.log(`Logged in as ${c.user.tag}`);
 });
 
-client.on(Events.VoiceStateUpdate, (_, newState) => {
+client.on(Events.VoiceStateUpdate, (oldState, newState) => {
+    if (newState.member?.user.bot) return;
     if (newState.channel?.members.size === 1) {
+        if (oldState.channelId === newState.channelId) {
+            console.log(`${newState.member?.displayName} Switched Device`);
+            return
+        }
+
         if (cooldown && Date.now() < cooldown) {
-            console.log("Hit Cooldown");
+            console.log(`${newState.member?.displayName} Triggered Anti-Spam`);
             return;
         }
+
         const message = `${newState.member?.displayName} has created a discord party in ${newState.guild?.name}`;
 
         console.log(message);
