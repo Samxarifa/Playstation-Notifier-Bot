@@ -1,5 +1,6 @@
 import { Client, Events, GatewayIntentBits } from "discord.js";
 import PlaystationAPI from "./playstation";
+import './healthcheck';
 
 const API = new PlaystationAPI(process.env.NPSSO!, process.env.GROUP_ID!);
 
