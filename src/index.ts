@@ -1,4 +1,4 @@
-import { Client, Events, GatewayIntentBits } from "discord.js";
+import { Client, Events, GatewayIntentBits, PermissionFlagsBits } from "discord.js";
 import PlaystationAPI from "./playstation";
 import './healthcheck';
 
@@ -22,13 +22,18 @@ client.once(Events.ClientReady, c => {
 client.on(Events.VoiceStateUpdate, (oldState, newState) => {
     if (newState.member?.user.bot) return;
     if (newState.channel?.members.size === 1) {
+        if (!newState.channel?.permissionsFor(newState.guild?.members.me!)?.has(PermissionFlagsBits.ViewChannel)) {
+            console.log(`Missing permissions to view channel ${newState.channel?.name} in guild ${newState.guild?.name}`);
+            return;
+        }
+
         if (oldState.channelId === newState.channelId) {
             console.log(`${newState.member?.displayName} Switched Device`);
             return
         }
 
         if (cooldown && Date.now() < cooldown) {
-            console.log(`${newState.member?.displayName} Triggered Anti-Spam`);
+            console.warn(`${newState.member?.displayName} Triggered Anti-Spam`);
             return;
         }
 
