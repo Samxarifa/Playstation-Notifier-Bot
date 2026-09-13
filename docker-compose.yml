@@ -5,3 +5,8 @@ services:
       dockerfile: Dockerfile
     env_file:
       - .env
+    volumes:
+      - psn-tokens:/data
+
+volumes:
+  psn-tokens:

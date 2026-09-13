@@ -40,7 +40,7 @@ client.on(Events.VoiceStateUpdate, (oldState, newState) => {
         const message = `${newState.member?.displayName} has created a discord party in ${newState.guild?.name}`;
 
         console.log(message);
-        API.sendMessage(`<${message}>`);
+        API.sendMessage(message);
         cooldown = Date.now() + Number(process.env.COOLDOWN) * 60_000;
     }
 });
