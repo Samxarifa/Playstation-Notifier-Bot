@@ -34,7 +34,7 @@ export default class PlaystationAPI {
 
     private async getAccessToken() {
         
-        if (!this.tokenStore.getAccessToken() && !this.tokenStore.getRefreshToken()) {
+        if (!this.tokenStore.getAccessToken() && !(await this.tokenStore.getRefreshToken())) {
             await this.getTokensFromNpsso();
             if (!this.tokenStore.getAccessToken() || !this.tokenStore.getExpiryTimeISO()) {
                 throw new Error("Failed to Generate Tokens");
