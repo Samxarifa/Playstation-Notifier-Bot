@@ -21,7 +21,7 @@ export default class TokenStore {
     async getRefreshToken() {
         try {
             if (await this.refreshFile.exists()) {
-                return this.refreshFile.text();
+                return await this.refreshFile.text();
             }
             return null;
         } catch (error) {
